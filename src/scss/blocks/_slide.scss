@@ -12,6 +12,12 @@
   );
 }
 
+@mixin background-position {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .slide {
   height: 100vh;
   overflow: hidden;
@@ -25,7 +31,27 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background: var(--radial-bg), var(--linear-bg), url("./../img/header.jpg");
+  background: var(--radial-bg), var(--linear-bg), url(./../img/header.jpg);
+
+  &--austria {
+    background: var(--radial-bg), var(--linear-bg), url(./../img/header2.jpg);
+    @include background-position;
+  }
+
+  &--uae {
+    background: var(--radial-bg), var(--linear-bg), url(./../img/header3.jpg);
+    @include background-position;
+  }
+
+  &--morocco {
+    background: var(--radial-bg), var(--linear-bg), url(./../img/header5.jpg);
+    @include background-position;
+  }
+
+  &--thailand {
+    background: var(--radial-bg), var(--linear-bg), url(./../img/header4.jpg);
+    @include background-position;
+  }
 
   &::before {
     content: "";
@@ -67,24 +93,45 @@
   }
 }
 
+@mixin background($color) {
+  background: linear-gradient(
+      47.06deg,
+      $color -3.87%,
+      rgba(255, 255, 255, 0) 20.89%
+    ),
+    #fff;
+}
+
 .slide__title {
+  display: inline-block;
+  padding: 0 10px;
   font-weight: 700;
   font-size: 13vw;
+  line-height: 1.22;
 
   @media (max-width: 767px) {
     font-size: 19vw;
   }
 
-  span {
-    background: linear-gradient(
-        47.06deg,
-        #000 -3.87%,
-        rgba(255, 255, 255, 0) 20.89%
-      ),
-      #fff;
+  @include background(#000);
 
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+
+  &--norway {
+    @include background(#051d27);
+  }
+
+  &--uae {
+    @include background(#aa6621);
+  }
+
+  &--thailand {
+    @include background(#2e7c88);
+  }
+
+  &--morocco {
+    @include background(#757575);
   }
 }
 
@@ -117,6 +164,11 @@
   background-repeat: no-repeat;
   color: #fff;
 
+  @media (max-width: 1400px) {
+    padding: 20px 20px 18px 55px;
+    background-position: 15px 22px;
+  }
+
   &::before {
     content: "";
     position: absolute;
@@ -129,6 +181,11 @@
     border-radius: 5px;
 
     transition: all 0.2s ease-in;
+  }
+
+  &:hover::before {
+    opacity: 0.8;
+    filter: blur(10px);
   }
 }
 

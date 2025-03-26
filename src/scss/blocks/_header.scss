@@ -56,6 +56,10 @@
   left: 0;
   bottom: 0;
   pointer-events: all;
+
+  @media (max-width: 1023px) {
+    display: none;
+  }
 }
 
 .header__slice-controls {
@@ -64,6 +68,10 @@
   position: absolute;
   right: 0;
   bottom: 0;
+
+  @media (max-width: 1023px) {
+    display: none;
+  }
 }
 
 .header__scrollbar {
@@ -77,4 +85,13 @@
 
   transform: rotate(90deg) translate(50%, 0%);
   transform-origin: right top;
+
+  @media (max-width: 767px) {
+    transform: none;
+    top: unset;
+    bottom: -15px;
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
 }

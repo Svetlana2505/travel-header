@@ -5,7 +5,7 @@ require("./gulp/dev.js");
 require("./gulp/docs.js");
 
 gulp.task(
-  "dev",
+  "default",
   gulp.series(
     "clean:dev",
     gulp.parallel("html:dev", "sass:dev", "images:dev", "fonts:dev", "js:dev"),

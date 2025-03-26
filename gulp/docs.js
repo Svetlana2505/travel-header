@@ -1,8 +1,10 @@
 const gulp = require("gulp");
+const replace = require("gulp-replace");
 
 const fileInclude = require("gulp-file-include");
 const htmlclean = require("gulp-htmlclean");
-const webpHTML = require("gulp-webp-html");
+const webpHTML = require("gulp-webp-retina-html");
+const typograf = require("gulp-typograf");
 
 const sass = require("gulp-sass")(require("sass"));
 const sassGlob = require("gulp-sass-glob");
@@ -32,28 +34,61 @@ gulp.task("clean:docs", function (done) {
   done();
 });
 
-const plumberHtmlConfig = {
-  errorHandler: notify.onError({
-    title: "HTML",
-    message: "Error <%= error.message %>",
-    sound: false,
-  }),
+const fileIncludeSetting = {
+  prefix: "@@",
+  basepath: "@file",
+};
+
+const plumberNotify = (title) => {
+  return {
+    errorHandler: notify.onError({
+      title: title,
+      message: "Error <%= error.message %>",
+      sound: false,
+    }),
+  };
 };
 
 gulp.task("html:docs", function () {
-  return gulp
-    .src(["./src/html/**/*.html", "!./src/html/blocks/*.html"])
-    .pipe(plumber(plumberHtmlConfig))
-    .pipe(changed("./docs/"))
-    .pipe(
-      fileInclude({
-        prefix: "@@",
-        basepath: "@file",
-      })
-    )
-    .pipe(webpHTML())
-    .pipe(htmlclean())
-    .pipe(gulp.dest("./docs/"));
+  return (
+    gulp
+      // .src(['./src/html/**/*.html', '!./src/html/blocks/*.html'])
+      .src([
+        "./src/html/**/*.html",
+        "!./**/blocks/**/*.*",
+        "!./src/html/docs/**/*.*",
+      ])
+      .pipe(changed("./docs/"))
+      .pipe(plumber(plumberNotify("HTML")))
+      .pipe(fileInclude(fileIncludeSetting))
+      .pipe(
+        replace(
+          /(?<=src=|href=|srcset=)(['"])(\.(\.)?\/)*(img|images|fonts|css|scss|sass|js|files|audio|video)(\/[^\/'"]+(\/))?([^'"]*)\1/gi,
+          "$1./$4$5$7$1"
+        )
+      )
+      .pipe(
+        typograf({
+          locale: ["ru", "en-US"],
+          htmlEntity: { type: "digit" },
+          safeTags: [
+            ["<\\?php", "\\?>"],
+            ["<no-typography>", "</no-typography>"],
+          ],
+        })
+      )
+      .pipe(
+        webpHTML({
+          extensions: ["jpg", "jpeg", "png", "gif", "webp"],
+          retina: {
+            1: "",
+            2: "@2x",
+          },
+        })
+      )
+      .pipe(htmlclean())
+      .pipe(gulp.dest("./docs/"))
+  );
 });
 
 gulp.task("fonts:docs", function () {

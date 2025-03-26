@@ -7,14 +7,14 @@
     <link rel="stylesheet" href="./css/main.css" />
   </head>
   <body>
-    <!-- @@include("blocks/header.html") -->
+    @@include("blocks/loader.html")
 
     <header class="header">
-      <!-- swiper -->
       @@include("blocks/swiper.html")
 
-      <div class="header__slide none">@@include("blocks/slide.html")</div>
+      <div class="header__slide">@@include("blocks/slide.html")</div>
       @@include("blocks/header__content.html")
+      @@include("blocks/mobile-nav.html")
     </header>
 
     <script src="./js/index.bundle.js"></script>
